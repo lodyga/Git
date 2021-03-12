@@ -1,4 +1,4 @@
-git config --global user.name "Your Name Comes Here"
+igt config --global user.name "Your Name Comes Here"
 git config --global user.email you@yourdomain.example.com
 git init
 
@@ -17,13 +17,17 @@ git branch <branch_name> utwórz brancha
 git checkout <branch_name>, master zmiana brancha
 
 
+
+
+
+
 export
 git remote add origin https://github.com/lodyga/<repository_name>.git		# Sets the new remote
 git remote -v	 # Verifies the new remote URL
 git push -u origin main
 git push --set-upstream origin master
 git branch -M main
-git clone https://github.com/lodyga/R.git
+git clone https://github.com/lodyga/<repository_name>.git
 
 
 z tutoriala node.js
