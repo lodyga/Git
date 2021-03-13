@@ -26,7 +26,7 @@ git push -u origin main
 git push --set-upstream origin master
 git branch -M main
 git clone https://github.com/lodyga/<repository_name>.git
-
+git push <remote> <local_branch>:<remote_name>
 
 # delete
 git branch -d <branch_name>
