@@ -1,6 +1,8 @@
+# initiate
 igt config --global user.name "Your Name Comes Here"
 git config --global user.email you@yourdomain.example.com
 git init
+
 
 git status
 git add . | filename
@@ -8,23 +10,27 @@ git commit -m “message”
 git commit -a -m 'message'
 git log
 
-branch
+# branch
 git checkout hash | master
 git branch
 git merge “branch_name”
-
 git checkout -b <branch_name> == 
 git branch <branch_name> utwórz brancha
 git checkout <branch_name>, master zmiana brancha
 
 
-export
+# export
 git remote add origin https://github.com/lodyga/<repository_name>.git		# Sets the new remote
 git remote -v	 # Verifies the new remote URL
 git push -u origin main
 git push --set-upstream origin master
 git branch -M main
 git clone https://github.com/lodyga/<repository_name>.git
+
+
+# delete
+git branch -d <branch_name>
+git push origin --delete feature/login
 
 
 z tutoriala node.js
