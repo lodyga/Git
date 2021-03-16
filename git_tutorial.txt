@@ -10,6 +10,7 @@ git commit -m “message”
 git commit -a -m 'message'
 git log
 
+
 # branch
 git checkout hash | master
 git checkout -b <branch_name> == 
@@ -28,16 +29,19 @@ git branch -M main
 git clone https://github.com/lodyga/<repository_name>.git
 git push <remote> <local_branch>:<remote_name>
 
+
 # rename
 git branch -m <new_name>
+
 
 # delete
 git branch -d <branch_name>
 git push origin --delete feature/login
 
 
-z tutoriala node.js
-git add .
-git commit -m "Initial release"
+# clone
+git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
+
+
 git tag v0.0.1 
 git push origin master --tags
