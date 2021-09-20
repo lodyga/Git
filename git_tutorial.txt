@@ -1,5 +1,5 @@
 # initiate
-igt config --global user.name "Your Name Comes Here"
+git config --global user.name "Your Name Comes Here"
 git config --global user.email you@yourdomain.example.com
 git init
 
@@ -23,16 +23,16 @@ git merge <branch_name>
 # export
 git remote add origin https://github.com/lodyga/<repository_name>.git		# Sets the new remote
 git remote -v	 # Verifies the new remote URL
-git push -u origin main
-git push --set-upstream origin master
 git branch -M main
+git push -u origin main
+git push --set-upstream origin master // jak jest error; a może leipej main zamiast master
 git clone https://github.com/lodyga/<repository_name>.git
 git push <remote> <local_branch>:<remote_name>
-
+git push -f origin master #  ! [rejected]
 
 # rename
 git branch -m <new_name>
-
+git remote set-url origin https://github.com/lodyga/<repository_name>.git # Changing a remote repository's URL
 
 # delete
 git branch -d <branch_name>
@@ -45,3 +45,15 @@ git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
 
 git tag v0.0.1 
 git push origin master --tags
+
+
+Quick setup
+echo "# Polish_Studio" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/lodyga/<repository_name>.git
+git push -u origin main
+
+git push -f -u origin main
