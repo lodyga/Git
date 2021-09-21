@@ -48,7 +48,7 @@ git push origin master --tags
 
 
 Quick setup
-echo "# Polish_Studio" >> README.md
+echo "# <repository_name>" >> README.md
 git init
 git add README.md
 git commit -m "first commit"
