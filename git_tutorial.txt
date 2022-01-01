@@ -29,6 +29,7 @@ git push --set-upstream origin master // jak jest error; a może leipej main zam
 git clone https://github.com/lodyga/<repository_name>.git
 git push <remote> <local_branch>:<remote_name>
 git push -f origin master #  ! [rejected]
+git push -f -u origin main
 
 # rename
 git branch -m <new_name>
@@ -55,5 +56,3 @@ git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com/lodyga/<repository_name>.git
 git push -u origin main
-
-git push -f -u origin main
