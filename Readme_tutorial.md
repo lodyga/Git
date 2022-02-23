@@ -70,7 +70,8 @@ document.write(today);
 
 * List item one
 * List item two
-    * A nested item
+  * A nested item
+    * Nested
 
 ---
 

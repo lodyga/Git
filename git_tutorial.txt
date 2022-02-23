@@ -1,27 +1,199 @@
-# initiate
+# getting started
 git config --global user.name "Your Name Comes Here"
 git config --global user.email you@yourdomain.example.com
-git init
+git config --list # shows config
+git config user.name # shows username
+
+# help
+git help <config>
+git <config> --help
+man git-<config>
+git config -h # short help
+
+2.1 Git Basics - Getting a Git Repository
+2.2 Git Basics - Recording Changes to the Repository
+# clone existing repository
+git clone https://github.com/<repo> [optional repo name] 
+git status
+git status -s # git status --short
+
+# .gitignore # ignoring files
+.[oa]
+*~
+doc/**/*.txt
+
+# shows differences
+git diff
+git diff --cached # git diff --staged
+
+# commit changes
+git commit
+git commit -v # verbose
+git commit -m 'commit_message' # add commit_message
+git commit -a -m 'commit_message'
+
+# deleting, moving
+git restore --staged <filename> # remove a file from index # --cached
+git rm <filename> # remove file from index and working dir
+git mv from_file to_file # rename a file
 
 
+2.3 Git Basics - Viewing the Commit History
+git log # commit history
+git log -p -2 # --patch, hist limit = 2
+git log --stat
+git log --pretty=oneline
+git log --pretty=format:'%h - %an, %ar : %s'
+git log --pretty=format:"%h %s" --graph # --graph doesn't seem to working
+
+# 2.4 Git Basics - Undoing Things
+git commit --amend # additional changes
+git restore --staged <filename> # remove a file from index # --cached
+git reset HEAD <filename> # remove a file from index
+
+git restore <filename> # revert file to last commit
+git checkout -- <filename> # revert file to last commit
+
+# 2.5 Git Basics - Working with Remotes
+git remote # remote servers you have configured
+git remote -v # URLs that Git has stored
+git remote add <shortname> <url> # add remote repository
+git fetch <shortname> # update repo from that remote
+# git fetch command only downloads the data to your local repository — 
+it doesn’t automatically merge it with any of your work or modify 
+what you’re currently working on. You have to merge it manually 
+into your work when you’re ready.
+git pull = git fetch + git merge
+git remote show # show remotes
+git remote show <origin> # more info about particular remote
+git remote rename <old_name> <new_name> # rename a remote
+git remote rm <name> # remove a remote
+
+# 2.6 Git Basics - Tagging
+git tag # list tags
+git tag -l 'v0.22.*' # list v0.22 series
+# annotated tags
+git tag -a <tag_name> -m <tag_message> # add an annotated tag
+git show <tag_name> # show version details
+# lightweight tags
+git tag <tag_name> # add lightweight a tag
+git tag <tag_name> <hash> # tagging history with lightweight tag
+git tag -a <tag_name> -m <message> <hash> # tagging history with annotated tag
+# sharing tags
+git push <origin> --tags # push all tags
+git push <origin> <tag_name> # push that tag
+git checkout -b [branchname] [tagname]: git checkout -b version2 v2.0.0
+
+# 2.7 Git Basics - Git Aliases
+$ git config --global alias.unstage 'reset HEAD --'
+This makes the following two commands equivalent:
+$ git unstage fileA
+$ git reset HEAD -- fileA
+
+
+# 3.1 Git Branching - Branches in a Nutshell
+git branch <branch_name> # make a branch but doesn't switch to it; HEAD (pointer) stays
+git log --oneline --decorate # shows you where the branch pointers are pointing
+git checkout <branch_name> # changes a branch
+git log <branch_name> # shows <branch_name> log
+git log --all # show all branches
+git log --oneline --decorate --graph --all # history of commits with graph
+
+# 3.2 Git Branching - Basic Branching and Merging
+git checkout -b <branch_name> = git branch <branch_name> + git checkout <branch_name> # create a new branch and switch to it at the same time
+# apply hotfix
+git checkout master
+git merge hotfix
+git branch -d hotfix # delete merged branch
+
+when conflicts, they're between <<<<<<<, =======, and >>>>>>> lines
+git mergetool # visual merge tool
+
+3.3 Git Branching - Branch Management
+git branch # lists branches
+git branch -v # lists branches with the latest commit
+git branch --merged # branches already merged, without * safe to git -d
+git branch --no-merged # not merged branches
+# Changing a branch name
+git branch --move bad-branch-name corrected-branch-name # locally
+git push --set-upstream origin corrected-branch-name # correct branch on the remote
+git branch -a # git branch --all # list all branches in local and remote repositories is
+git branch -r # list remote branches
+git push origin --delete bad-branch-name # remove remote branch
+
+# Rename your local master branch into main with the following command:
+git branch --move master main
+git push --set-upstream origin main
+# update dependencies
+git push origin --delete master
+
+3.4 Git Branching - Branching Workflows
+
+3.5 Gałęzie Gita - Gałęzie zdalne
+git ls-remote # remote name
+git remote show # remote name
+git ls-remote # remote name # list remote branches
+git remote show # remote name # list remote branches
+git remote add <origin> <repository_name> # Add a new remote
+git push <remote> <branch> # push branch
+git push <remote> <branch>:<new_branch_name> # push branch with new name
+git fetch origin # It’s important to note that when you do a fetch 
+that brings down new remote-tracking branches, you don’t automatically 
+have local, editable copies of them. In other words, in this case, 
+you don’t have a new serverfix branch — you have only an origin/serverfix 
+pointer that you can’t modify.
+git merge origin/serverfix # To merge this work into your current working branch
+git checkout -b serverfix origin/serverfix # This gives you a local branch that you can work on that starts where origin/serverfix is
+
+Checking out a local branch from a remote-tracking branch automatically creates what is called a “tracking branch” (and the branch it tracks is called an “upstream branch”). Tracking branches are local branches that have a direct relationship to a remote branch. If you’re on a tracking branch and type git pull, Git automatically knows which server to fetch from and which branch to merge in.
+
+git checkout -b <branch> <remote>/<branch> = git checkout --track origin/serverfix = git checkout serverfix # create tracking branch
+git checkout -b sf origin/serverfix # Branch sf set up to track remote branch serverfix from origin
+
+git branch -u origin/serverfix # set up remote branch; -u = --set-upstream-to
+
+git branch -vv # list all branches with info
+git pull = git fetch + git merge
+git push origin --delete serverfix # delete a branch from server
+
+# 3.6 Git Branching - Rebasing
+git checkout experiment
+git rebase master # This operation works by going to the common ancestor of the two branches (the one you’re on and the one you’re rebasing onto), getting the diff introduced by each commit of the branch you’re on, saving those diffs to temporary files, resetting the current branch to the same commit as the branch you are rebasing onto, and finally applying each change in turn.
+git checkout master
+git merge experiment
+
+git rebase --onto master server client 
+# Do not rebase commits that exist outside your repository and that people may have based work on.
+
+
+
+
+
+
+
+
+
+
+# 
+git init # initiate repository
 git status
 git add . | filename
-git commit -m “message”
+git commit -m 'message'
 git commit -a -m 'message'
 git log
 
 
 # branch
 git checkout hash | master
-git checkout -b <branch_name> == 
-git branch <branch_name> utwórz brancha
-git checkout <branch_name>, master zmiana brancha
+git checkout -b <branch_name> # utwórz brancha
+git branch <branch_name> # utwórz brancha
+- git checkout <branch_name>, master zmiana brancha
 
 git merge <branch_name>
 
 
 # export
-git remote add origin https://github.com/lodyga/<repository_name>.git		# Sets the new remote
+- git remote add origin https://github.com/lodyga/<repository_name>.git		# Sets the new remote
 git remote -v	 # Verifies the new remote URL
 git branch -M main
 git push -u origin main
@@ -56,3 +228,238 @@ git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com/lodyga/<repository_name>.git
 git push -u origin main
+
+
+
+
+
+
+
+
+
+
+
+
+
+# https://www.mimuw.edu.pl/~lukaszcz/git.html
+
+Krótkie i zwięzłe wprowadzenie do GITa
+Poniżej zamieszczam bardzo zwięzły opis najczęściej używanych komend oraz wyjaśniam jak wykonać niektóre typowe zadania. Można to wykorzystać jako ściągawkę. Nieco bardziej rozbudowane wprowadzenie do GITa będzie na moodlu. Zobacz też: Everyday GIT, Pro Git.
+
+Podstawowe pojęcia
+katalog roboczy (working directory, working tree)
+Katalog w którym dokonujemy zmian. Zawiera wycheckoutowaną zawartość ostatniej wersji w bieżącej gałęzi (czyli bieżącej wersji, HEAD), plus zmiany których dokonaliśmy.
+
+index (staging area)
+Trzyma zmiany które zostaną zacommitowane do nowej wersji (w lokalnym repozytorium) przy wykonaniu git commit. Zmiany z katalogu roboczego można dodać do indeksu przez git add.
+
+repozytorium lokalne
+Nasza lokalna kopia repozytorium. Znajduje się w podkatalogu .git katalogu roboczego. Ogólna zasada jest taka, że wszystkie operacje są wykonywane na lokalnym repozytorium. Jeśli chcemy nasze zmiany upublicznić, to trzeba je explicite ,,wypchnąć'' do repozytorium zdalnego używając git push.
+
+repozytorium zdalne
+Może być więcej niż jedno. Domyślne zwykle nazywa się origin. Żeby zmiany z repozytorium lokalnego znalazły się w zdalnym trzeba wykonać git push. Aby pobrać zmiany z repozytorium zdalnego do lokalnego używamy git pull.
+
+Należy mieć na uwadze, że obiekty w repozytorium zdalnym wcale nie muszą odpowiadać obiektom w lokalnym repozytorium. Mogą np. być w repozytorium zdalnym gałęzie których nie ma w lokalnym i vice versa. Można zapisywać zmiany do wielu repozytoriów zdalnych, które to repozytoria mogą się różnić między sobą np. istnieniem określonych gałęzi. Można zapisywać zmiany tylko z niektórych gałęzi w repozytorium lokalnym.
+
+wersja (commit)
+Wersja plików zapisana w repozytorium. Wersje tworzą graf acykliczny skierowany. Wersja A jest bezpośrednim następnikiem (syn, child) wersji B jeśli A powstała bezpośrednio poprzez zmianę wersji B. Wersje można łączyć (git merge), więc dana wersja może mieć więcej niż jednego bezpośredniego poprzednika (ojciec, parent). Tworzenie nowej wersji (w repozytorium lokalnym) zawierającej zmiany zapisane w indeksie dokonuje się przez git commit. Do zmiany plików w katalogu roboczym na pliki z danej wersji służy git checkout.
+
+gałąź (branch)
+Liniowo uporządkowany zbiór wierzchołków w grafie wersji. Można (a właściwie to nawet lepiej) myśleć o gałęzi jako o wskaźniku na jakąś wersję w grafie wersji, tzn. utożsamiać ją z ostatnią wersją w gałęzi. Zobacz: What a branch is. Zwykle istnieje bieżąca gałąź, której wskaźnik jest przesuwany razem z HEAD przy wykonywaniu operacji git commit, git reset, itp. Stan w którym nie ma bieżącej gałęzi nazywa się detached head.
+
+gałąź zdalna (remote branch)
+Gałąź w zdalnym repozytorium.
+
+gałąź śledząca (tracking branch)
+Gałąź w repozytorium lokalnym śledząca (track) gałąź zdalną. Z grubsza rzecz biorąc, jeśli gałąź A w repozytorium lokalnym śledzi gałąź repo/A w jakimś repozytorium zdalnym repo, to zmiany w repo/A będą pobierane do A przez git pull, a zmiany w A będą zapisywane do repo/A przez git push.
+
+HEAD
+Wskazuje na bieżącą wersję z lokalnego repozytorium. W katalogu roboczym znajdują się pliki z wersji wskazywanej przez HEAD zmienione o modyfikacje które wykonaliśmy.
+
+ORIG_HEAD
+Poprzednia wartość HEAD, sprzed wykonania którejś z operacji zmieniających HEAD (git commit, git merge, git pull, git checkout, git reset, itd).
+
+master
+Główna, domyślna gałąź. Po stworzeniu nowego repozytorium jest to gałąź bieżąca. Typowy sposób pracy z GITem wygląda tak, że dla każdego większego zadania tworzymy nową gałąź, pracujemy w tej gałęzi, a potem jak mamy już gotową funkcjonalność to mergujemy tę gałąź do master.
+
+revision
+Można w uproszczeniu powiedzieć, że revision jest specyfikacją wersji, tzn. określa o którą wersję nam chodzi. Zwrot ,,revision'' pojawia się czasem w dokumentacji komend. Przydatne sposoby specyfikowania wersji:
+
+rev^
+Pierwszy ojciec wersji rev. Pamiętajmy, że wersja może mieć wielu ojców jeśli np. powstała przez połączenie (merge) kilku wersji.
+
+rev^N
+N-ty ojciec wersji rev.
+
+rev~N
+Wersja N wersji przed wersją rev, gdzie wybieramy zawsze pierwszego ojca jeśli jest więcej niż jeden. Np. rev~3 to to samo co rev^^^, co jest tym samym co rev^1^1^1.
+
+Można te sposoby łączyć, np. HEAD~2^2 oznacza drugiego ojca dziadka wersji wskazywanej przez HEAD.
+Konfiguracja tożsamości
+Należy wykonać poniższe polecenia przed rozpoczęciem korzystania z GITa.
+
+ 
+    git config --global user.name "Imie Nazwisko"
+    git config --global user.email email@email.com
+     
+Inicjalizacja repozytorium
+git init
+Inicjalizuje puste repozytorium (lokalne) w podkatalogu .git bieżącego katalogu. Bieżący katalog staje się katalogiem roboczym.
+
+git init --bare
+Jeśli repozytorium ma być ,,zdalne'' (bare repository) do/z którego można robić push/pull, to trzeba użyć opcji --bare. Wtedy repozytorium jest umieszczane bezpośrednio w bieżącym katalogu i nie ma katalogu roboczego.
+
+git clone git://serwer.com/repo.git repo
+Klonuje repozytorium zdalne do katalogu repo. Automatycznie ustawia origin na klonowane repozytorium zdalne, tak jakbyśmy wykonali:
+
+ 
+        git remote add origin git://serwer.com/repo.git
+	 
+Operacje na indeksie
+Zmiany w katalogu roboczym nie będą samoistnie zacommitowane do nowej wersji w repozytorium lokalnym gdy zrobimy git commit. Commitowane są tylko zmiany zapisane w indeksie.
+
+git add plik
+Dodaje zmiany w pliku plik do indeksu. W szczególności, jeśli tego pliku nie było w bieżącej wersji, to jest dodawany cały plik.
+
+git add .
+Dodaje zmiany we wszystkich plikach w katalogu roboczym i podkatalogach (rekurencyjnie). Pliki których nie było w bieżącej wersji są dodawane.
+
+git status
+Wyświetla informację o tym, które zmiany w katalogu roboczym zostały zapisane w indeksie, a które nie.
+
+git rm plik
+Usuwa plik z indeksu oraz z katalogu roboczego.
+
+git mv plik1 plik2
+Zmienia nazwę pliku plik1 na plik2 i zapisuje tę zmianę w indeksie.
+
+git reset plik
+Operacja odwrotna do git add. Ustawia plik w indeksie na jego postać w bieżącej wersji, czyli w efekcie usuwa zmiany w pliku plik dodane do indeksu przez git add.
+
+Operacje na wersjach
+git commit -m "opis"
+Tworzy nową wersję w lokalnym repozytorium. Ta wersja różnić się będzie od bieżącej zmianami zapisanymi w indeksie. Po wykonaniu tej komendy nowo utworzona wersja staje się bieżącą, HEAD oraz bieżąca gałąź wskazują na nową wersję, a indeks jest tożsamy z nową bieżącą wersją (nie zawiera żadnych zmian). Po argumencie -m podaje się opis zmian, np. "Bugfix 123", "Implementacja parsera".
+
+git commit -a -m "opis"
+Jest to najczęstsza postać komendy commit. Opcja -a powoduje, że przed zacommitowaniem dodawane są do indeksu zmiany we wszystkich plikach w katalogu roboczym które istniały w bieżącej wersji.
+
+UWAGA: Nowe pliki których wcześniej w ogóle nie było nie są dodawane. Trzeba je oddzielnie dodać używając git add.
+
+git commit --amend -m "opis"
+Z opcją --amend nie jest tworzona nowa wersja, tylko zastępowana jest bieżąca wersja. Jest to przydatne gdy np. zrobiliśmy commit, ale zaraz potem zorientowaliśmy się że np. daliśmy zły opis. Nie należy tej opcji stosować gdy bieżąca wersja została już wypchnięta (przez git push) do repozytorium zdalnego.
+
+git log
+Pokazuje historię wersji do bieżącej wersji, tzn. wierzchołki grafu wersji które są osiągalne z bieżącej wersji idąc zawsze do ojca. Ta komenda ma wiele dodatkowych opcji, które pozwalają wyspecyfikować które dokładnie wersje chcemy oglądać. Zobacz: Viewing the commit history.
+
+git diff
+Wyświetla różnice pomiędzy indeksem a katalogiem roboczym.
+
+git diff --cached
+Wyświetla różnice pomiędzy bieżącą wersją (HEAD) a indeksem.
+
+git diff rev
+Wyświetla różnice pomiędzy wersją rev a katalogiem roboczym.
+
+git diff rev1 rev2
+Wyświetla różnice pomiędzy wersją rev1 a wersją rev2.
+
+git reset --soft rev
+Ustawia bieżącą wersję (HEAD) oraz bieżącą gałąź na rev, nie zmieniając jednak indeksu ani katalogu roboczego. Późniejszy commit spowoduje utworzenie wersji będącej synem rev. Należy tej komendy używać gdy chcemy ,,usunąć'' ostatnio zrobione commity (w rzeczywistości nie są one fizycznie usuwane z repozytorium i można do nich powrócić, ale ,,psuje'' to historię). Nie należy tej komendy używać gdy ,,usuwane'' commity zostały już wypchnięte do zdalnego repozytorium.
+
+UWAGA: Jeśli nie mamy nazwanej gałęzi wskazującej na rev to możemy stracić możliwość odwoływania się do rev, bo wskaźnik bieżącej gałęzi też zostaje przesunięty, w przeciwieństwie do git checkout.
+
+UWAGA: Do poruszania się po grafie wersji służy git checkout. Natomiast git reset służy do ,,usuwania'' ostatnio wykonanych commitów i powinien być używany wyjątkowo.
+
+git reset --hard rev
+Jak wyżej, ale zmienia też indeks i katalog roboczy (niezacommitowane zmiany zostają bezpowrotnie stracone).
+
+Operacje na gałęziach
+git branch
+Wypisuje gałęzie w lokalnym repozytorium.
+
+git branch B
+Tworzy nową gałąź o nazwie B. Utworzona gałąź wskazuje na bieżącą wersję. Bieżąca gałąź nie jest zmieniana, tzn. po wykonaniu komendy nadal pracujemy w gałęzi w której wcześniej byliśmy, a nie w nowo utworzonej. Właściwie częściej stosuje się git checkout -b B aby od razu zmienić bieżącą gałąź na nowo utworzoną.
+
+UWAGA: Gałąź tworzona jest lokalnie i nie będzie automatycznie uwzględniona przy wykonywaniu git push. Aby wypchnąć ją do repozytorium zdalnego należy użyć git push -u repo B, gdzie repo to nazwa repozytorium (zwykle origin). Opcja -u powoduje, że później bezargumentowe git push i git pull będą uwzględniać tę gałąź, tzn. gałąź B będzie śledzić odpowiednią gałąź w repozytorium zdalnym repo.
+
+git branch -d B
+Usuwa gałąź B, tzn. usuwa sam wskaźnik B a nie wersję na którą ta gałąź wskazuje. Wersja ta może być wciąż dostępna z innych gałęzi.
+
+git checkout B
+Zmienia bieżącą gałąź na B, o ile B jest nazwą gałęzi. HEAD także jest ustawiane na wersję wskazywaną przez B.
+
+git checkout -b B
+Mniej więcej to samo co:
+
+
+	      git branch B
+	      git checkout B
+	  
+git checkout rev
+Jeśli rev jest specyfikacją wersji (np. HEAD^, HEAD~2), to HEAD zostaje ustawione na rev bez zmiany bieżącej gałęzi. W ten sposób można znaleźć się w stanie z obciętą głową.
+
+git merge A B C
+Tworzy nową wersję poprzez włączenie wersji wskazywanych przez gałęzie A, B i C do bieżącej wersji. Zwykle chcemy wmergować tylko jedną gałąź, ale można i kilka na raz.
+
+Przy mergowaniu może pojawić się konflikt, czyli niekompatybilne zmiany w tym samym pliku w różnych wersjach. Wtedy GIT nie tworzy automatycznie nowej wersji, tylko wypisuje, że wystąpił konflikt. W katalogu roboczym znajdują się wtedy pliki które udało się zmergować oraz skonfliktowane pliki. Musimy ręcznie rozwiązać konflikty, po czym samemu zacommitować nową wersję. Żeby zobaczyć jakie pliki są w konflikcie używamy git status. W każdym ze skonfliktowanych plików w katalogu roboczym będą miejsca w rodzaju:
+
+ 
+	    <<<<<<< HEAD
+	    Kod z wersji HEAD
+	    =======
+	    Kod z gałęzi A
+	    >>>>>>> A
+	   
+Trzeba te miejsca ręcznie poprawić i potem dodać poprawiony plik do indeksu przez git add. Na koniec gdy rozwiążemy wszystkie konflikty robimy git commit.
+Operacje na zdalnym repozytorium
+Zobacz też: Remote branches.
+
+git remote
+Wyświetla listę repozytoriów zdalnych.
+
+git remote add repo URL
+Dodaje repozytorium zdalne o adresie URL.
+
+git push
+Zapisuje do gałęzi zdalnych w domyślnym repozytorium zdalnym (zwykle origin) zmiany z gałęzi je śledzących w repozytorium lokalnym. Właściwie to nie do końca prawda, ale dla uproszczenia można przyjąć, że tak jest. O asymetrii push i pull można przeczytać tutaj.
+
+git push repo
+Zapisuje śledzone gałęzie do zdalnego repozytorium repo.
+
+git push repo B
+Zapisuje w repozytorium zdalnym gałąź B.
+
+git push -u repo B
+Jak wyżej, ale dodatkowo sprawia, że gałąź lokalna B będzie śledzić jej zdalny odpowiednik (repo/B). Ten wariant komendy push powinien być używany gdy po raz pierwszy zapisujemy lokalnie utworzoną gałąź w repozytorium zdalnym.
+
+git pull
+Pobiera zmiany z odpowiednich gałęzi zdalnych do gałęzi śledzących te gałęzie zdalne. Próbuje automatycznie wmergować zmiany. Może się to nie udać i doprowadzić do powstania konfliktu. Zobacz też git merge.
+
+git pull repo
+Pobiera śledzone gałęzie ze zdalnego repozytorium repo.
+
+git pull repo B
+Pobiera gałąź B ze zdalnego repozytorium repo i zapisuje ją w lokalnej gałęzi B.
+
+git fetch
+Działa jak git pull z tą różnicą, że nie wmergowuje automatycznie zmian do 
+lokalnych gałęzi. Po wykonaniu git fetch (git fetch repo, git fetch repo B) 
+można samemu zmergować gałąź zdalną z odpowiednią gałęzią lokalną używając 
+np. git merge repo/B.
+
+git branch -r
+Wypisuje gałęzie zdalne.
+
+git checkout -b B repo/B
+Tworzy lokalnie gałąź B śledzącą gałąź zdalną repo/B. Zmienia gałąź bieżącą na B.
+
+Należy pamiętać, że pull/fetch nie tworzą lokalnie nowych gałęzi które są w repozytorium zdalnym, ale nie ma ich w lokalnym. Żeby taką gałąź stworzyć trzeba użyć powyższej komendy.
+
+git branch -u repo/B B
+Po wykonaniu tej komendy gałąź B będzie śledzić gałąź zdalną repo/B. Przydaje się jeśli zapomnimy dać -u przy git push. W starszych wersjach GITa ta komenda ma postać: git branch --set-upstream B repo/B.
+
+Dostępne GUI
+qgit
+git gui
+git instaweb
+back to main page	Last updated 17 Mar 2014 by Łukasz Czajka
