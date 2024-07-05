@@ -1,3 +1,30 @@
+# Remove files from tracking.
+git rm --cached "*.pyc" # removes *.pyc from GIT tracking list
+
+# Authenticate with GitHub using a token, PAT
+# Generate a Personal Access Token (PAT) on GitHub:
+git remote set-url origin https://lodyga:<YOUR_PERSONAL_ACCESS_TOKEN>@github.com/lodyga/Django.git
+
+# View the last committed version of views.py:
+git show HEAD:codesite/forums/views.py
+
+# modify the most recent commit with same comment
+git commit --amend --no-edit
+
+# remove from the staging area
+git restore --staged <file>
+git reset HEAD -- <file>
+
+# discard changes in working directory
+git restore <file>
+
+# remove from stage and stop tracking but keep the file
+git rm --cached <file>
+git rm -r --cached codesite/djangoenv/
+
+
+
+
 # getting started
 git config --global user.name "Your Name Comes Here"
 git config --global user.email you@yourdomain.example.com
