@@ -222,8 +222,9 @@ git merge <branch_name>
 # export
 - git remote add origin https://github.com/lodyga/<repository_name>.git		# Sets the new remote
 git remote -v	 # Verifies the new remote URL
-git branch -M main
-git push -u origin main
+# git branch -M main  # rename the current branch to main, no need for that, master is of
+# create repo with the same name on https://github.com/lodyga/
+git push -u origin master
 git push --set-upstream origin master // jak jest error; a może leipej main zamiast master
 git clone https://github.com/lodyga/<repository_name>.git
 git push <remote> <local_branch>:<remote_name>
