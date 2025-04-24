@@ -1,6 +1,13 @@
 # Remove files from tracking.
 git rm --cached "*.pyc" # removes *.pyc from GIT tracking list
 
+# discard changes in working directory
+git restore <file>  # Discard Changes in VSC Source Control
+
+# remove from stage and stop tracking but keep the file
+git rm --cached <file>
+git rm -r --cached codesite/djangoenv/
+
 # Authenticate with GitHub using a token, PAT
 # Generate a Personal Access Token (PAT) on GitHub:
 git remote set-url origin https://lodyga:<YOUR_PERSONAL_ACCESS_TOKEN>@github.com/lodyga/Django.git
@@ -15,12 +22,22 @@ git commit --amend --no-edit
 git restore --staged <file>
 git reset HEAD -- <file>
 
-# discard changes in working directory
-git restore <file>
 
-# remove from stage and stop tracking but keep the file
-git rm --cached <file>
-git rm -r --cached codesite/djangoenv/
+# add remote
+git remote add github https://github.com/lodyga/codecrafters-http-server-python.git
+git push -u github master
+
+# set default remote
+git push --set-upstream github master  #  == git push -u github master; for git push / pull default
+
+# push to specific remote
+git push origin master
+git push github master
+
+
+
+
+
 
 
 
@@ -214,7 +231,7 @@ git log
 git checkout hash | master
 git checkout -b <branch_name> # utwórz brancha
 git branch <branch_name> # utwórz brancha
-- git checkout <branch_name>, master zmiana brancha
+git checkout <branch_name>, master zmiana brancha
 
 git merge <branch_name>
 
